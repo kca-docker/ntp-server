@@ -5,7 +5,7 @@ steps:
   # Check Dockerfile for security smells and best practices
   lint:
     when:
-      event: push
+      event: [push, deployment, cron, manual]
       branch: main
     image: hadolint/hadolint:latest-alpine
     commands:
@@ -14,7 +14,7 @@ steps:
   # Build the image (dry-run to test build process)
   build-test:
     when:
-      event: push
+      event: [push, deployment, cron, manual]
       branch: main
     image: woodpeckerci/plugin-docker-buildx
     settings:
@@ -26,7 +26,7 @@ steps:
   # Scan image for vulnerabilities (BSI/NIST compliance)
   security-scan:
     when:
-      event: push
+      event: [push, deployment, cron, manual]
       branch: main
     image: aquasec/trivy:latest
     commands:
@@ -35,7 +35,7 @@ steps:
   # Final step: Publish if all checks passed
   publish:
     when:
-      event: push
+      event: [push, deployment, cron, manual]
       branch: main
     image: woodpeckerci/plugin-docker-buildx
     settings:
