@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.title="Secure NTP Server" \
       org.opencontainers.image.licenses="unlicense"
 
 # Install chrony and remove cache to keep image size small
-RUN apk add --no-cache chrony && \
+RUN apk add --no-cache chrony=4.5-r0 && \
     # Ensure directories exist and permissions are set for the chrony user
     mkdir -p /etc/chrony /var/lib/chrony /var/run/chrony && \
     chown -R chrony:chrony /etc/chrony /var/lib/chrony /var/run/chrony
