@@ -22,6 +22,9 @@ steps:
       repo: ntp-server
       tags: latest
       dry_run: true
+      # Deaktiviere Metadaten, die das Archiv-Layout verändern
+      provenance: false
+      sbom: false
       # Exportiert das Image als lokale Datei statt es zu pushen
       output: type=oci,dest=ntp-server.tar,oci-mediatypes=false
 
@@ -44,6 +47,7 @@ steps:
     image: woodpeckerci/plugin-docker-buildx
     settings:
       platforms: *arch
+      sbom: true
       repo: bksolutions/ntp-server
       tags: [latest, "${CI_COMMIT_SHA:0:7}"]
       username:
