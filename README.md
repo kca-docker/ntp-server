@@ -115,37 +115,27 @@ docker exec ntp-server chronyc sourcestats -v
 
 **docker-compose.yaml**
 ```yaml
+### Using Docker Compose (Recommended)
+Create a `docker-compose.yaml` to run the official image with hardened security settings:
+
+```yaml
 services:
   ntp-server:
-    build: .
+    image: bksolutions/ntp-server:latest
     container_name: ntp-server
     restart: unless-stopped
     ports:
       - "123:123/udp"
-    # Sicherheit: Verhindert das Schreiben auf das Root-Dateisystem
     read_only: true
-    # Benötigte beschreibbare Verzeichnisse für Chrony
     tmpfs:
       - /tmp
       - /var/run/chrony:uid=100,gid=101
     volumes:
       - ntp-data:/var/lib/chrony
-    # Hardening: Entzieht alle Kernel-Berechtigungen
     cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
-    # Healthcheck Definition (falls nicht im Dockerfile)
-    healthcheck:
-      test: ["CMD", "chronyc", "tracking"]
-      interval: 60s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-
-volumes:
-  ntp-data:
-    name: ntp_server_drift_data
 ```
 
 To ensure maximum security and efficiency, the following parameters are used in the Compose setup:
