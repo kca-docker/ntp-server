@@ -22,6 +22,8 @@ steps:
       repo: ntp-server
       tags: latest
       dry_run: true
+      # Exportiert das Image als lokale Datei statt es zu pushen
+      output: type=docker,dest=ntp-server.tar
 
   # Scan image for vulnerabilities (BSI/NIST compliance)
   security-scan:
@@ -32,7 +34,7 @@ steps:
     environment:
       DOCKER_HOST: "tcp://10.89.0.69:2375"
     commands:
-      - trivy image --exit-code 1 --severity HIGH,CRITICAL ntp-server:latest
+      - trivy image --exit-code 1 --severity HIGH,CRITICAL --input ntp-server.tar
 
   # Final step: Publish if all checks passed
   publish:
