@@ -29,6 +29,8 @@ steps:
       event: [push, deployment, cron, manual]
       branch: main
     image: aquasec/trivy:latest
+    environment:
+      - DOCKER_HOST=tcp://127.0.0.1:2375
     commands:
       - trivy image --exit-code 1 --severity HIGH,CRITICAL ntp-server:latest
 
