@@ -22,6 +22,10 @@ EXPOSE 123/udp
 # Run as non-root user (BSI SYS.1.6 requirement)
 USER chrony
 
+# Healthcheck: Verify that chrony is responding locally
+HEALTHCHECK --interval=60s --timeout=5s --start-period=5s --retries=3 \
+    CMD chronyc tracking || exit 1
+
 # -d: run in foreground (log to stdout), -f: specify config file
 ENTRYPOINT ["/usr/sbin/chronyd"]
 CMD ["-d", "-f", "/etc/chrony/chrony.conf"]

@@ -1,0 +1,22 @@
+---
+variables:
+  - &file README.md
+  - &repo bksolutions/ntp-server
+
+steps:
+  update_doc:
+    when:
+      - event: [push, tag, deployment]
+        branch: [main]
+        path:
+          include: ['*.md']
+          ignore_message: '[ALL]'
+          on_empty: true
+    image: peterevans/dockerhub-description:3
+    environment:
+      DOCKERHUB_USERNAME:
+        from_secret: DOCKER_BKSOL_USER
+      DOCKERHUB_PASSWORD: 
+        from_secret: DOCKER_BKSOL_PASS
+      DOCKERHUB_REPOSITORY: *repo
+      README_FILEPATH: *file
