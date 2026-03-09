@@ -37,7 +37,12 @@ steps:
     environment:
       DOCKER_HOST: "tcp://10.89.0.69:2375"
     commands:
-      - trivy image --exit-code 1 --severity HIGH,CRITICAL --input ntp-server.tar
+      # 1. Erstelle ein Verzeichnis für das OCI-Layout
+      - mkdir oci-image
+      # 2. Entpacke das Multi-Arch Tarball dort hinein
+      - tar -xf ntp-server.tar -C oci-image
+      # 3. Scanne das Verzeichnis (Trivy erkennt nun die index.json)
+      - trivy image --exit-code 1 --severity HIGH,CRITICAL --input oci-image
 
   # Final step: Publish if all checks passed
   publish:
