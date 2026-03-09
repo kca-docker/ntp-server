@@ -23,7 +23,7 @@ steps:
       tags: latest
       dry_run: true
       # Exportiert das Image als lokale Datei statt es zu pushen
-      output: type=oci,dest=ntp-server.tar
+      output: type=oci,dest=ntp-server.tar,oci-mediatypes=false
 
   # Scan image for vulnerabilities (BSI/NIST compliance)
   security-scan:
